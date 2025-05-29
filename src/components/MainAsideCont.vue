@@ -2,7 +2,9 @@
     <el-menu
         :default-active="activeIndex"
         class="el-menu-vertical-demo"
+        :collapse="isCollapse"
     >
+        <h3>测试平台管理</h3>
         <!-- 渲染没有子菜单的项 -->
         <el-menu-item
             v-for="item in noChilden"
@@ -44,6 +46,8 @@ import {
     Setting,
 } from '@element-plus/icons-vue';
 
+import { useAllDataStore } from '@/store';
+
 interface MenuItem {
     index: string;
     label: string;
@@ -77,11 +81,19 @@ const handlemenu = (item: MenuItem) => {
 const handlemenuchild = (item: MenuItem, subItem: MenuItem) => {
     router.push(subItem.index);
 };
+// const isCollapse = ref(true)
+const store = useAllDataStore();
+
+const isCollapse = computed(() => store.isCollapse);
+
 </script>
 
 <style>
 .el-menu {
     height: 100%; /* 设置整个布局的高度为 100%，确保布局占满整个视口 */
+    .h3{
+
+    }
 }
 .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
@@ -99,7 +111,7 @@ const handlemenuchild = (item: MenuItem, subItem: MenuItem) => {
 
 /* 鼠标悬停时的样式 */
 .icon:hover {
-    color: #e28f12; /* 鼠标悬停时图标的颜色 */
+    color: #409eff; /* 鼠标悬停时图标的颜色 */
 }
 
 </style>

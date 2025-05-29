@@ -1,6 +1,6 @@
 import {defineConfig, loadEnv} from 'vite'
 import vue from '@vitejs/plugin-vue'
-import {fileURLToPath, URL} from "node:url"
+// import {fileURLToPath, URL} from "node:url"
 import Components from "unplugin-vue-components/vite"; // 自动导入 Vue 组件
 import AutoImport from "unplugin-auto-import/vite"; // 自动导入 Vue 相关 API
 import {ElementPlusResolver} from 'unplugin-vue-components/resolvers'
@@ -80,7 +80,7 @@ export default defineConfig((mode): any => {
         ],
         resolve: {
             alias: {
-                "@": fileURLToPath(new URL("./src", import.meta.url)),
+                '@': path.join(__dirname, './src'),
             },
         },
         // vite.config.ts

@@ -12,7 +12,7 @@
     "noUnusedParameters": true,
     "noImplicitAny": false,
     "types": ["vue", "node", "vite/client", "vite-plugin-pwa/client"],
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
     },
