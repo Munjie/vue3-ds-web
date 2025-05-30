@@ -13,6 +13,7 @@ import AccountSetting from '@/views/AccountSetting/index.vue'
 import Login from '@/views/login/index.vue'
 // @ts-ignore
 import NotFound from "@/views/404.vue";
+import {useAllDataStore} from "@/store";
 
 //定义路由规则
 const routes = [
@@ -55,13 +56,34 @@ const router = createRouter({
 });
 
 // @ts-ignore
+// 全局前置守卫
 router.beforeEach((to, from, next) => {
-    if (to.matched.length === 0) {
+    const store = useAllDataStore();
+    // @ts-ignore
+    const tokenKey = store.getToken();
+    console.log("tokenKey",tokenKey);
+    // else if (!tokenKey && to.name !== 'login') {
+    if (!tokenKey && isChildrenRoute(to)) {
+        console.log("tokenKey",tokenKey);
+        next({ name: "login" }); // 如果有 token 并且是登录页面，重定向到主页
+    }
+    else   if (to.matched.length === 0) {
         next({ name: "404" }); // 如果没有匹配的路由，跳转到 404 页面
-    } else {
+    }
+    else {
         next();
     }
 });
+
+
+function isChildrenRoute(to: any): boolean {
+    // 检查路由是否为 children 路由
+    console.log("to.matched",to.matched);
+    if (to.name === 'main'  ||  to.name === 'home'|| to.matched.length === 0) {
+        return true;
+    }
+    return to.matched.some(record => record.parent && record.parent.name === 'main');
+}
 
 //暴露出去
 export default router;

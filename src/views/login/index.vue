@@ -54,8 +54,10 @@ const loginFormRef = ref<FormInstance | null>(null);
 const fetchLoginData = async () => {
     try {
         const data = await login(loginForm);
+        // @ts-ignore
         store.setUsername(data.data.userName);
-        store.setToken( data.data.token);
+        // @ts-ignore
+        store.setToken(data.data.token);
         await fetchMenuData();
         await router.push('/main');
         console.log("login is---------->"+data.data.userName)
@@ -68,10 +70,14 @@ const fetchLoginData = async () => {
 // 获取菜单数据
 const fetchMenuData = async () => {
     try {
+        // @ts-ignore
         console.log('store.getUsername()数据:', store.getUsername());
+        // @ts-ignore
         const result = await menuAPI(store.getUsername());
+        // @ts-ignore
         store.setMenuData(result.data);
         console.log('login result 返回的数据:', result);
+        // @ts-ignore
         console.log('login menuAPI 返回的数据:', store.getMenuData());
     } catch (error) {
         console.error('获取菜单数据失败:', error);
