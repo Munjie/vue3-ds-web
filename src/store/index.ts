@@ -1,8 +1,7 @@
-
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia';
 
 import router from '../router';
-import type { Component } from 'vue';
+import type {Component} from 'vue';
 // 定义公共 store
 // @ts-ignore
 type Modules = Record<string, () => Promise<{ default: Component }>>;
@@ -13,7 +12,7 @@ export const useAllDataStore = defineStore('useAllData', {
         isCollapse: false, // 定义初始状态
         username: '',
         token: '',
-        menuData:[],
+        menuData: [],
     }),
 
     // 定义 actions
@@ -39,7 +38,7 @@ export const useAllDataStore = defineStore('useAllData', {
         },
 
         // 设置菜单数据
-        setMenuData(menuData: any){
+        setMenuData(menuData: any) {
             addRouter(menuData)
             this.menuData = menuData
         },
@@ -48,6 +47,19 @@ export const useAllDataStore = defineStore('useAllData', {
             // @ts-ignore
             return this.menuData;
         },
+        resetStore() {
+            // @ts-ignore
+            this.$reset(); // 重置 Pinia 状态
+            localStorage.removeItem('useAllData-store');
+        },
+       // 登出方法
+        logout() {
+            // @ts-ignore
+            this.resetStore()
+            // 检查登录后的逻辑
+            router.push({name: 'login'}).then(() => {
+            });
+        }
     },
     persist: {
         enabled: true,
@@ -55,23 +67,22 @@ export const useAllDataStore = defineStore('useAllData', {
             {
                 key: 'useAllData-store',
                 storage: localStorage,
-                paths: ['token','menuData'], // 指定需要持久化的字段
+                paths: ['token', 'menuData'], // 指定需要持久化的字段
             },
         ],
     },
 });
 
 
-
-function addRouter(menuData: any){
-    const routerList=router.getRoutes()
+function addRouter(menuData: any) {
+    const routerList = router.getRoutes()
     const modules: Modules = import.meta.glob('../views/**/*.vue') as Modules;
-    const routerArr=[]
+    const routerArr = []
 
-    menuData.forEach((item:any) => {
+    menuData.forEach((item: any) => {
         // console.log(item)
-        if(item.children){
-            item.children.forEach((child:any) => {
+        if (item.children) {
+            item.children.forEach((child: any) => {
 
                 const componentPath = `../${child.path}.vue`;
 
@@ -89,13 +100,10 @@ function addRouter(menuData: any){
 
                 }
             });
-        }
-        else
-        {
+        } else {
             const componentPath = `../${item.path}.vue`;
             const module = modules[componentPath];
-            if(module)
-            {
+            if (module) {
                 item.component = module;
                 // @ts-ignore
                 routerArr.push(item)
@@ -104,7 +112,7 @@ function addRouter(menuData: any){
         }
     });
     // 增加删除路由
-    routerList.forEach((item:any) => {
+    routerList.forEach((item: any) => {
 
         if (item.name === 'main'
             || item.name === 'home'
@@ -118,7 +126,7 @@ function addRouter(menuData: any){
         router.removeRoute(item.name)
     });
 
-    routerArr.forEach((item:any) => {
+    routerArr.forEach((item: any) => {
 
         router.addRoute('main',
             {
@@ -129,7 +137,7 @@ function addRouter(menuData: any){
             });
 
     })
-    const routerListLast=router.getRoutes()
+    const routerListLast = router.getRoutes()
     console.log(routerListLast)
 
 }
@@ -139,7 +147,5 @@ export function ReloadData() {
     // @ts-ignore
     const menuData = store.getMenuData();
     addRouter(menuData);
-
-
-
 }
+
