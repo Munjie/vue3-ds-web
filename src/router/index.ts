@@ -11,7 +11,8 @@ import UserInfo from '@/views//UserInfo/index.vue'
 import AccountSetting from '@/views/AccountSetting/index.vue'
 // @ts-ignore
 import Login from '@/views/login/index.vue'
-
+// @ts-ignore
+import NotFound from "@/views/404.vue";
 
 //定义路由规则
 const routes = [
@@ -19,25 +20,14 @@ const routes = [
         path: '/',
         name: 'main',
         component: Main,
-        redirect: { name: 'home' }, // 默认重定向到 home 子路由
+        redirect: { name: 'login' },
         children: [
             {
                 path: 'home',
                 name: 'home',
                 component: Home,
 
-            },
-            {
-                path: 'UserInfo',
-                name: 'UserInfo',
-                component: UserInfo,
-
-            },
-            {
-                path: 'AccountSetting',
-                name: 'AccountSetting',
-                component:AccountSetting
-            },
+            }
         ],
     },
     {
@@ -46,8 +36,14 @@ const routes = [
         component: Login,
     },
     {
-        path: '/main', // 如果确实需要 /main 路径
-        redirect: { name: 'home' }, // 仅保留重定向规则
+        path: '/main',
+        redirect: { name: 'home' },
+    },
+    // 其他路由配置...
+    {
+        path: '/404',
+        name: "404",
+        component: NotFound,
     },
 ];
 
@@ -56,6 +52,15 @@ const router = createRouter({
     //路由的一种前端展现方式，通常使用这个就行了
     history: createWebHistory(),
     routes,
+});
+
+// @ts-ignore
+router.beforeEach((to, from, next) => {
+    if (to.matched.length === 0) {
+        next({ name: "404" }); // 如果没有匹配的路由，跳转到 404 页面
+    } else {
+        next();
+    }
 });
 
 //暴露出去
