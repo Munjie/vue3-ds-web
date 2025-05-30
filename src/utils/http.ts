@@ -1,61 +1,72 @@
 //  src/utils/request.ts
-import axios, { InternalAxiosRequestConfig, AxiosResponse } from "axios";
-import { ElMessage, ElMessageBox } from "element-plus";
+import axios, {AxiosResponse, AxiosError } from 'axios';
+import { ElMessage} from "element-plus";
 
 // 创建 axios 实例
-const service = axios.create({
-    baseURL: import.meta.env.VITE_APP_BASE_API,
+const instance = axios.create({
+    baseURL: import.meta.env.VITE_APP_API_URL,
     timeout: 50000,
     headers: { "Content-Type": "application/json;charset=utf-8" },
 });
 
 // 请求拦截器
-service.interceptors.request.use(
-    (config: InternalAxiosRequestConfig) => {
-        // const userStore = useUserStoreHook();
-        // if (userStore.token) {
-        //   config.headers.Authorization = userStore.token;
-        // }
-        config.headers.Authorization =
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImRlcHRJZCI6MSwiZGF0YVNjb3BlIjoxLCJleHAiOjE3NDcwMjY5NjgsInVzZXJJZCI6MiwiaWF0IjoxNzQ3MDE5NzY4LCJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sImp0aSI6ImQxYmJlMjNkNzA4ZjQ2MzQ5ZGQ5MzI3YTZkYzMyNmI1In0.VH1SS3Y3Rxq8_9cBSLDhfksinDBLkgYp5mPN03bn5To";
+instance.interceptors.request.use(
+    (config) => {
+        // Add authentication token if needed
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
         return config;
     },
-    (error: any) => {
-        return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
 );
-
 // 响应拦截器
-service.interceptors.response.use(
+instance.interceptors.response.use(
     (response: AxiosResponse) => {
-        const { code, msg } = response.data;
-        // 登录成功
-        if (code === "200") {
-            return response.data;
+        // 对响应数据做点什么
+        if (response.data.code !== 200) {
+            ElMessage.error(response.data.message);
+            return Promise.reject(response.data);
         }
-
-        ElMessage.error(msg || "系统出错");
-        return Promise.reject(new Error(msg || "Error"));
+        return response.data; // 直接返回数据
     },
-    (error: any) => {
-        if (error.response.data) {
-            const { code, msg } = error.response.data;
-            // token 过期，跳转登录页
-            if (code === "1001") {
-                ElMessageBox.confirm("当前页面已失效，请重新登录", "提示", {
-                    confirmButtonText: "确定",
-                    type: "warning",
-                }).then(() => {
-                    localStorage.clear(); // @vueuse/core 自动导入
-                    window.location.href = "/";
-                });
-            } else {
-                ElMessage.error(msg || "系统出错");
-            }
+    (error: AxiosError) => {
+        // 对响应错误做点什么
+        if (error.response) {
+            // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+            // @ts-ignore
+            ElMessage.error('API Error:', error.response);
+            // 返回后端返回的错误数据
+            return Promise.reject(error.response.data);
+        } else if (error.request) {
+            // 请求已发出，但没有收到响应
+            ElMessage.error('API Error:', error.request);
+            return Promise.reject(error.request);
+        } else {
+            // 在设置请求时触发了错误
+            // @ts-ignore
+            ElMessage.error('API Error:', error.message);
+            return Promise.reject(error.message);
         }
-        return Promise.reject(error.message);
     }
 );
+export function get(url, params = {}) {
+    return instance.get(url, { params });
+}
 
-// 导出 axios 实例
-export default service;
+export function post(url, data = {}) {
+    return instance.post(url, data);
+}
+
+export function put(url, data = {}) {
+    return instance.put(url, data);
+}
+
+export function del(url) {
+    return instance.delete(url);
+}
+
+
+
+export default instance;

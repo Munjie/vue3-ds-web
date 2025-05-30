@@ -4,7 +4,7 @@
         class="el-menu-vertical-demo"
         :collapse="isCollapse"
     >
-        <h3>测试平台管理</h3>
+        <h3 :key="TitleText">{{TitleText}}</h3>
         <!-- 渲染没有子菜单的项 -->
         <el-menu-item
             v-for="item in noChilden"
@@ -41,12 +41,9 @@
 <script lang="ts" setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import {
-    Document,
-    Setting,
-} from '@element-plus/icons-vue';
-
 import { useAllDataStore } from '@/store';
+
+const store = useAllDataStore();
 
 interface MenuItem {
     index: string;
@@ -54,19 +51,36 @@ interface MenuItem {
     icon?: any;
     children?: MenuItem[];
 }
+// 确保 menuAPI 是一个数组，并赋值给 menuData
+const menuData = ref<MenuItem[]>([]); // 初始化为空数组
 
-const menuData = ref<MenuItem[]>([
-    { index: 'Home', label: '首页', icon: Document },
-    {
-        index: 'SysSettings',
-        label: '系统设置',
-        icon: Setting,
-        children: [
-            { index: 'UserInfo', label: '个人资料' },
-            { index: 'AccountSetting', label: '账户设置' },
-        ],
-    },
-]);
+// 封装数据获取和处理逻辑
+const fetchMenuData = async () => {
+    try {
+        const data = store.getMenuData(); // 调用异步 API 获取数据
+        console.info('menuAPI :', data);
+        if (Array.isArray(data)) {
+            menuData.value = data
+        } else {
+            console.error('menuAPI 返回的数据不是数组:', data);
+        }
+    } catch (error) {
+        console.error('获取菜单数据失败:', error);
+    }
+};
+
+onMounted(() => {
+    if (!store.getMenuData().length) {
+        console.warn('菜单数据为空，尝试重新获取');
+        fetchMenuData();
+    } else {
+        console.log('菜单数据已存在，无需重新获取');
+        menuData.value = store.getMenuData();
+        console.log('menuData.value:', menuData.value);
+    }
+});
+
+
 
 const hasChilden = computed(() => menuData.value.filter(item => item.children && item.children.length > 0));
 const noChilden = computed(() => menuData.value.filter(item => !item.children || item.children.length === 0));
@@ -81,24 +95,36 @@ const handlemenu = (item: MenuItem) => {
 const handlemenuchild = (item: MenuItem, subItem: MenuItem) => {
     router.push(subItem.index);
 };
-// const isCollapse = ref(true)
-const store = useAllDataStore();
+
+
+
+const TitleText = computed(() => {
+    return store.isCollapse ? '平台' : '测试平台';
+});
 
 const isCollapse = computed(() => store.isCollapse);
+/*
+// 使用 defineComponent 显式命名组件
+export const MainAsideCont = defineComponent({
+  name: 'MainAsideCont'
+});
+*/
 
 </script>
 
 <style>
 .el-menu {
     height: 100%; /* 设置整个布局的高度为 100%，确保布局占满整个视口 */
-    .h3{
-
-    }
+    border-right: none; /* 去掉右边框 */
 }
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 200px;
+    width: 180px;
     min-height: 400px;
 }
+.el-menu-vertical-demo.el-menu--collapse {
+    width: 60px; /* 收缩时的宽度 */
+}
+
 .icon {
     margin-right: 8px; /* 图标与文字之间的间距 */
     font-size: 18px;   /* 图标的大小 */

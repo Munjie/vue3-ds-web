@@ -14,6 +14,7 @@
     "axios": "^1.9.0",
     "element-plus": "^2.9.11",
     "fast-glob": "^3.3.3",
+    "mockjs": "^1.1.0",
     "pinia": "^3.0.2",
     "pinia-plugin-persistedstate": "^4.3.0",
     "vite-plugin-svg-icons": "^2.0.1",

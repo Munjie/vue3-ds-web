@@ -9,6 +9,8 @@ import Home from '@/views/home/index.vue'
 import UserInfo from '@/views//UserInfo/index.vue'
 // @ts-ignore
 import AccountSetting from '@/views/AccountSetting/index.vue'
+// @ts-ignore
+import Login from '@/views/login/index.vue'
 
 
 //定义路由规则
@@ -17,6 +19,7 @@ const routes = [
         path: '/',
         name: 'main',
         component: Main,
+        redirect: { name: 'home' }, // 默认重定向到 home 子路由
         children: [
             {
                 path: 'home',
@@ -36,6 +39,15 @@ const routes = [
                 component:AccountSetting
             },
         ],
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: Login,
+    },
+    {
+        path: '/main', // 如果确实需要 /main 路径
+        redirect: { name: 'home' }, // 仅保留重定向规则
     },
 ];
 

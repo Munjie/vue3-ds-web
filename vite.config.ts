@@ -21,14 +21,13 @@ export default defineConfig((mode): any => {
             host: "0.0.0.0",
             open: true,
             port: +env.VITE_APP_PORT,
+            cors: true,
             proxy: {
-                /** 代理前缀为 /dev-api 的请求  */
                 [env.VITE_APP_BASE_API]: {
                     changeOrigin: true,
-                    // 接口地址
-                    target: "https://vue.youlai.tech", //<你的目标接口地址>
+                    target: env.VITE_APP_API_URL,
                     rewrite: (path: any) =>
-                        path.replace(new RegExp("^" + env.VITE_APP_BASE_API), "/prod-api"), // 重写路径，去掉/api前缀
+                        path.replace(new RegExp("^" + env.VITE_APP_BASE_API), ""),
                 },
             },
         },
