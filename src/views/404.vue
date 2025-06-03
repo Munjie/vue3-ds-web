@@ -25,7 +25,7 @@ const loading = ref(false);
 const goBack = () => {
     loading.value = true;
     setTimeout(() => {
-        router.push("/");
+        router.push("/main");
         loading.value = false;
     }, 1000);
 };

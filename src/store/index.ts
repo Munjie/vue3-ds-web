@@ -5,10 +5,41 @@ import type {Component} from 'vue';
 // 定义公共 store
 // @ts-ignore
 type Modules = Record<string, () => Promise<{ default: Component }>>;
+
+function stateIni(): {
+    isCollapse: boolean;
+    username: string;
+    token: string;
+    menuData: any[];
+    tabs: { path: string; index: string; label: string; icon: string }[];
+    currentMenu: any;
+    permissions: any[];// 用户的权限列表
+    currentPagePath: string;// 当前页面路径
+} {
+    return {
+        isCollapse: false,
+        username: '',
+        token: '',
+        menuData: [],
+        tabs: [
+            {
+                path: "/home",
+                index: "Home",
+                label: "home",
+                icon: "home"
+            }
+        ],
+        currentMenu: null,
+        permissions: [], // 用户的权限列表
+        currentPagePath: '/' ,// 当前页面路径
+    };
+}
 // @ts-ignore
 export const useAllDataStore = defineStore('useAllData', {
     // 定义状态
-    state: () => ({
+    // 定义状态
+    state: stateIni,
+ /*   state: () => ({
         isCollapse: false, // 定义初始状态
         username: '',
         token: '',
@@ -21,7 +52,10 @@ export const useAllDataStore = defineStore('useAllData', {
 
         ],
         currentMenu:null,
-    }),
+        permissions: [],
+        // @ts-ignore// 用户的权限列表
+        currentPagePath: string,// 当前页面路径
+    }),*/
 
     // 定义 actions
     actions: {
@@ -54,6 +88,22 @@ export const useAllDataStore = defineStore('useAllData', {
         getMenuData(): [] {
             // @ts-ignore
             return this.menuData;
+        },
+        // 权限
+        setPermissions(val: any) {
+            this.permissions = val;
+        },
+        getPermissions(): [] {
+            // @ts-ignore
+            return this.permissions  ;
+        },
+
+        // 当前页面路径
+        setCurrentPagePath(val: any) {
+            this.currentPagePath = val;
+        },
+        getCurrentPagePath() {
+            return this.currentPagePath  ;
         },
         resetStore() {
             // @ts-ignore

@@ -28,6 +28,7 @@ import { login } from '@/api/user.ts';
 import { useAllDataStore } from '@/store';
 import { useRouter } from 'vue-router';
 import { menuAPI } from '@/api/menu';
+import { permissionAPI } from '@/api/permission';
 
 
 const router = useRouter();
@@ -76,6 +77,10 @@ const fetchMenuData = async () => {
         const result = await menuAPI(store.getUsername());
         // @ts-ignore
         store.setMenuData(result.data);
+        // @ts-ignore
+        const resultPermission = await permissionAPI(store.getUsername());
+        // @ts-ignore
+        store.setPermissions(resultPermission.data);
         console.log('login result 返回的数据:', result);
         // @ts-ignore
         console.log('login menuAPI 返回的数据:', store.getMenuData());
