@@ -90,10 +90,14 @@ const router = useRouter();
 
 const handlemenu = (item: MenuItem) => {
     router.push(item.index);
+    console.log('item:', item);
+    store.setTabsData(item)
 };
 
 const handlemenuchild = (item: MenuItem, subItem: MenuItem) => {
     router.push(subItem.index);
+    console.log('subItem:', subItem);
+    store.setTabsData(subItem)
 };
 
 

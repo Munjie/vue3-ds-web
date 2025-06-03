@@ -13,6 +13,14 @@ export const useAllDataStore = defineStore('useAllData', {
         username: '',
         token: '',
         menuData: [],
+        tabs:[
+            {path:"/home"
+                ,name:"home"
+                ,label:"home"
+                ,icon:"home"}
+
+        ],
+        currentMenu:null,
     }),
 
     // 定义 actions
@@ -51,6 +59,33 @@ export const useAllDataStore = defineStore('useAllData', {
             // @ts-ignore
             this.$reset(); // 重置 Pinia 状态
             localStorage.removeItem('useAllData-store');
+        },
+        // tabs
+        setTabsData(val: any)
+        {
+            console.log('val',val)
+            if(val.name==='home')
+            {
+                this.currentMenu=null;
+
+            }
+            else
+            {
+                let index=this.tabs.findIndex((item:any)=>item.index===val.index);
+                console.log(index)
+                index===-1?  this.tabs.push(val):"";
+                console.log('tabs:',this.tabs)
+
+            }
+        },
+        getTabsData(): [] {
+            // @ts-ignore
+            return this.tabs;
+        },
+        removeTagsData(val: any)
+        {
+            let index=this.tabs.findIndex((item:any)=>item.index===val.index);
+            this.tabs.splice(index,1)
         },
        // 登出方法
         logout() {

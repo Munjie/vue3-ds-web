@@ -86,6 +86,7 @@ const fetchMenuData = async () => {
 
 const submitForm = () => {
     if (!loginFormRef.value) return;
+    store.resetStore();
     fetchLoginData();
     // loginFormRef.value.validate((valid) => {
     //     if (valid) {

@@ -8,6 +8,7 @@
                 <el-header>
                     <MainHdrCont/>
                 </el-header>
+                <MainTagsCont />
                 <el-main>
                     <router-view></router-view>
                 </el-main>
@@ -19,6 +20,7 @@
 import {defineComponent} from 'vue';
 import MainAsideCont from '@/components/MainAsideCont.vue';
 import MainHdrCont from '@/components/MainHdrCont.vue';
+import MainTagsCont from '@/components/MainTagsCont.vue';
 
 
 </script>
