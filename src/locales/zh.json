@@ -1,0 +1,17 @@
+
+{
+    "header": {
+      "title": "测试平台",
+      "home": "首页",
+      "systemConfiguration": "系统配置",
+      "inspectionSettings": "检测配置",
+      "faultConfiguration": "故障配置",
+      "logs": "日志"
+    }
+    ,
+    "footer": {
+      "copyright": "Copyright © 2023-present"
+    },
+    "user": {"title": "用户信息"}
+  }
+  

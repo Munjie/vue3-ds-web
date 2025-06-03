@@ -1,0 +1,13 @@
+
+{
+    "header": {
+      "title": "API TEST Inspection System",
+      "home": "Home",
+      "systemConfiguration": "System Configuration",
+      "inspectionSettings": "Inspection Settings",
+      "faultConfiguration": "Fault Configuration",
+      "logs": "Logs"
+    },
+    "user": {"title": "User Info"}
+  }
+  

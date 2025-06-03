@@ -15,6 +15,7 @@ function stateIni(): {
     currentMenu: any;
     permissions: any[];// 用户的权限列表
     currentPagePath: string;// 当前页面路径
+    locale: string; // 当前语言
 } {
     return {
         isCollapse: false,
@@ -32,6 +33,7 @@ function stateIni(): {
         currentMenu: null,
         permissions: [], // 用户的权限列表
         currentPagePath: '/' ,// 当前页面路径
+        locale: 'en' ,//当前语言默认en英语
     };
 }
 // @ts-ignore
@@ -97,6 +99,14 @@ export const useAllDataStore = defineStore('useAllData', {
             // @ts-ignore
             return this.permissions  ;
         },
+        // 当前语言
+        setLocale(val: any) {
+            this.locale = val;
+        },
+        getLocale() {
+            return this.locale  ;
+        },
+
 
         // 当前页面路径
         setCurrentPagePath(val: any) {
