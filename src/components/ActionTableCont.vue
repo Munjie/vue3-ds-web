@@ -11,7 +11,6 @@
             <el-table-column
                     v-if="showSelection"
                     type="selection"
-                    width="55"
                     align="center"
             ></el-table-column>
 
@@ -19,7 +18,6 @@
             <el-table-column
                     type="index"
                     label="序号"
-                    width="50"
                     align="center"
             ></el-table-column>
 
@@ -29,8 +27,7 @@
                     :key="column.prop"
                     :prop="column.prop"
                     :label="column.label"
-                    :width="column.width"
-                    :align="column.align || 'left'"
+                    :align="column.align || 'center'"
             ></el-table-column>
         </el-table>
 

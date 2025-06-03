@@ -8,6 +8,7 @@
             <ActionButtonGroup
                 :show-add="hasPermission('demo2:create')"
                 :show-delete="true"
+                :disabled-delete="false"
                 :disabled-add="false"
                 :disabled-edit="false"
                 @add="handleAdd"

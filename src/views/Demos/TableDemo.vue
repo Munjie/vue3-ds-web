@@ -6,7 +6,6 @@
                 :disabled-add="false"
                 :disabled-edit="!selectedData.length"
                 :disabled-delete="!selectedData.length"
-
                 @add="handleAdd"
                 @edit="handleEdit"
                 @delete="handleDelete"
@@ -54,17 +53,14 @@ const columns = ref([
     {
         prop: 'date',
         label: '日期',
-        width: 180,
     },
     {
         prop: 'name',
         label: '姓名',
-        width: 180,
     },
     {
         prop: 'address',
         label: '地址',
-        hide: true,
     },
 ]);
 

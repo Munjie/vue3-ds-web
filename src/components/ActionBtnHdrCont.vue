@@ -72,7 +72,7 @@ const props = defineProps({
     // 删除按钮是否禁用
     disabledDelete: {
         type: Boolean,
-        default: true,
+        default: false,
     },
 });
 
