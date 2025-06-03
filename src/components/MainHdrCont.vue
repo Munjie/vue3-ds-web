@@ -3,15 +3,19 @@
   <!-- 顶部导航栏 -->
     <div class="header-layout">
         <div class="header-left">
-            <div class="mb-4">
+<!--            <div class="mb-4">
                 <el-button type="primary" :key="bntMenuText" @click="handleMenu">{{bntMenuText}}</el-button>
 
-            </div>
+            </div>-->
+            <el-icon size="22" style="margin-left: 15px;" @click="handleMenu">
+                <expand v-if="store.isCollapse" />
+                <fold v-else />
+            </el-icon>
         </div>
         <div class="header-right">
             <el-dropdown>
                <span class="el-dropdown-link">
-                 <el-avatar :size="30" src="../assets/vue.svg" />
+                 <el-avatar :size="30" src="./src/assets/vue.svg" />
                  <el-icon><ArrowDown /></el-icon>
                </span>
                 <template #dropdown>
@@ -65,6 +69,7 @@ export const MainAHdrCont = defineComponent({
 }
 
 .header-left {
+    flex-grow: 1;
     display: flex;
     align-items: center;
 
