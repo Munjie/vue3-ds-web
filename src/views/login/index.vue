@@ -59,12 +59,43 @@ const fetchLoginData = async () => {
         store.setUsername(data.data.userName);
         // @ts-ignore
         store.setToken(data.data.token);
-        await fetchMenuData();
+        await fetchLoginAfterData().then(() => {
+            router.push('/main');
+        }).catch((error) => {
+            ElMessage.error(`菜单或权限数据获取失败，请稍后再试: ${error.message || '未知错误'}`);
+        });
+      /*  await fetchMenuData();
         await router.push('/main');
-        console.log("login is---------->"+data.data.userName)
+        console.log("login is---------->"+data.data.userName)*/
     } catch (error) {
         ElMessage.error('登录请求失败，请稍后再试');
 
+    }
+};
+
+async function getMenu(): Promise<any> {
+    // @ts-ignore
+    const result = await menuAPI(store.getUsername());
+    // @ts-ignore
+    store.setMenuData(result.data);
+
+}
+
+async function getPermission(): Promise<any> {
+    // @ts-ignore
+    const result = await permissionAPI(store.getUsername());
+    // @ts-ignore
+    store.setPermissions(result.data);
+
+}
+// 获取菜单数据
+const fetchLoginAfterData = async () => {
+    try {
+        await Promise.all([getMenu(), getPermission()]);
+
+    }
+    catch (error) {
+        ElMessage.error(`菜单或权限数据获取失败，请稍后再试: ${error.message || '未知错误'}`);
     }
 };
 
