@@ -37,7 +37,7 @@
                 :page-size="pageSize"
                 :page-sizes="pageSizes"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="tableData.length"
+                :total="total"
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 style="margin-top: 20px"
@@ -70,6 +70,11 @@ const props = defineProps({
     showSelection: {
         type: Boolean,
         default: false,
+    },
+    total: {
+        type: Number,
+        required: true,
+        default: 0,
     },
 });
 

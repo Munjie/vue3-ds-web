@@ -1,6 +1,7 @@
 //  src/utils/request.ts
 import axios, {AxiosResponse, AxiosError } from 'axios';
 import { ElMessage} from "element-plus";
+import {useAllDataStore} from "@/store";
 
 // 创建 axios 实例
 const instance = axios.create({
@@ -9,12 +10,17 @@ const instance = axios.create({
     headers: { "Content-Type": "application/json;charset=utf-8" },
 });
 
+
+
 // 请求拦截器
 instance.interceptors.request.use(
     (config) => {
         // Add authentication token if needed
-        const token = localStorage.getItem('token');
+        // const token = localStorage.getItem('token');
+        // @ts-ignore
+        let token = useAllDataStore().getToken();
         if (token) {
+            config.headers.token = token;
             config.headers.Authorization = `Bearer ${token}`;
         }
         return config;

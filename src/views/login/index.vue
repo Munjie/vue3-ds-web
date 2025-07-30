@@ -124,6 +124,7 @@ const fetchMenuData = async () => {
 
 const submitForm = () => {
     if (!loginFormRef.value) return;
+    // @ts-ignore
     store.resetStore();
     fetchLoginData();
     // loginFormRef.value.validate((valid) => {

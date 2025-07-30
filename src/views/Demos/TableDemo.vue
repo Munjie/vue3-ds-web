@@ -15,6 +15,7 @@
                 :tableColumns="columns"
                 :tableData="data"
                 :pageSize="pageSize"
+                :total = "total"
                 :pageSizes="[5, 10, 15, 20, 30]"
                 :showSelection="true"
                 @update:currentPage="currentPage = $event"
@@ -138,7 +139,7 @@ const data = ref([
         address: '上海市普陀区金沙江路 1507 弄',
     },
 ]);
-
+const total =  ref(12);
 const currentPage = ref(1);
 const pageSize = ref(5);// 默认每页显示5条数据
 
