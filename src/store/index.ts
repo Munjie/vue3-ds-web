@@ -9,6 +9,7 @@ type Modules = Record<string, () => Promise<{ default: Component }>>;
 function stateIni(): {
     isCollapse: boolean;
     username: string;
+    userid: number;
     token: string;
     menuData: any[];
     tabs: { path: string; index: string; label: string; icon: string }[];
@@ -20,6 +21,7 @@ function stateIni(): {
     return {
         isCollapse: false,
         username: '',
+        userid: 0,
         token: '',
         menuData: [],
         tabs: [
@@ -69,6 +71,15 @@ export const useAllDataStore = defineStore('useAllData', {
         // 获取用户名
         getUsername(): string {
             return this.username;
+        },
+        //
+        setUserid(userid: number) {
+            this.userid = userid;
+        },
+
+        // 获取用户名
+        getUserid(): number {
+            return this.userid;
         },
 
         // 设置 token_key

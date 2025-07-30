@@ -58,6 +58,8 @@ const fetchLoginData = async () => {
         // @ts-ignore
         store.setUsername(data.data.userName);
         // @ts-ignore
+        store.setUserid(data.data.id)
+        // @ts-ignore
         store.setToken(data.data.token);
         await fetchLoginAfterData().then(() => {
             router.push('/main');
@@ -68,14 +70,14 @@ const fetchLoginData = async () => {
         await router.push('/main');
         console.log("login is---------->"+data.data.userName)*/
     } catch (error) {
-        ElMessage.error('登录请求失败，请稍后再试');
+        console.log('登录请求失败，请稍后再试'+error);
 
     }
 };
 
 async function getMenu(): Promise<any> {
     // @ts-ignore
-    const result = await menuAPI(store.getUsername());
+    const result = await menuAPI(store.getUserid());
     // @ts-ignore
     store.setMenuData(result.data);
 
